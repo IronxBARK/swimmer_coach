@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect  # Added redirect
 from django.urls import reverse  # Added reverse for URL resolution
 from django.views.generic import TemplateView
+from django.conf import settings  # Import settings to access the templates directory
+import os
 from .forms import FileNameForm, SwimmerChoiceForm
 from hfpython import swimclub
 
@@ -53,24 +55,14 @@ class DataPage(TemplateView):
         if form.is_valid():
             choice = form.cleaned_data['choice']  # Retrieve the selected choice
 
-            # Make file
+            # Make file and save it in the templates directory
             filename = f"{swimmer_name}-{age}-{choice}.txt"
-            save_to = swimclub.make_charts(filename)
-            print(save_to)
-            # Open the file in a new tab
-            self.open_file(save_to)
-        
+            templates_dir = os.path.join(settings.BASE_DIR, 'templates', 'charts')
+            os.makedirs(templates_dir, exist_ok=True)  # Ensure the directory exists
+            save_to = swimclub.make_charts(filename, save_dir=templates_dir)
+
+            # Render the generated chart directly
+            chart_name = os.path.basename(save_to)  # Extract the file name
+            return render(request, f'charts/{chart_name}')
 
         return self.render_to_response(self.get_context_data(form=form))
-
-    
-    def open_file(self, file_path):
-        '''Opens the corresponding file '''
-        from webbrowser import open_new_tab
-        import os
-        # Check if the file exists
-        if os.path.exists(file_path):
-            # Open the file in a new tab
-            open_new_tab(file_path)
-        else:
-            print(f"File {file_path} does not exist.")

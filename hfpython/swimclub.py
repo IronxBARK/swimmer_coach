@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of th
 FOLDER = os.path.join(BASE_DIR, 'swimdata')  # Absolute path to swimdata directory
 CHART = os.path.join(BASE_DIR, 'charts')  # Absolute path to charts directory
 
-def make_charts(fn):
+def make_charts(fn, save_dir=CHART):
     ''' Make chart and html file with all the necessary information '''
     (swimmer, age, distance, stroke, times, average, converts) = swimmer_data(fn)
     title = f"{swimmer} (Under {age}) {distance} {stroke}"
@@ -18,8 +18,10 @@ def make_charts(fn):
     head, body, footer = _make_html(title, times, converts, average) 
     page = head + body + footer
     
-    # write to file
-    save_to = os.path.join(CHART, f"{fn.removesuffix('.txt')}.html")
+
+    save_to = os.path.join(save_dir, f"{fn.removesuffix('.txt')}.html")
+    
+    # Write to file
     with open(save_to, 'w') as sf:
         print(page, file=sf)
 
