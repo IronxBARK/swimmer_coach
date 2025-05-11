@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}
+Swimming Data
+{% endblock %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}  <!-- Ensure this line is present to render the form fields -->
+  <button type="submit">Submit</button>
+</form>
+{% endblock %}
