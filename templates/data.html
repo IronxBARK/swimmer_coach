@@ -1,12 +1,17 @@
 {% extends "base.html" %}
 
+{% block title %}
+Swimmer Data
+{% endblock %}
+
 {% block content %}
-<h1>Swimmer: {{ swimmer_name }}</h1>
-<form method="post">
+<div class="form-container">
+  <form method="post" class="styled-form">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="hidden" name="swimmer_name" value="{{ swimmer_name }}"> <!-- Hidden field for swimmer_name -->
     <input type="hidden" name="age" value="{{ age }}"> <!-- Hidden field for age -->
     <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+  </form>
+</div>
 {% endblock %}

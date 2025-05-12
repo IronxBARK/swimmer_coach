@@ -5,9 +5,11 @@ Swimming Data
 {% endblock %}
 
 {% block content %}
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}  <!-- Ensure this line is present to render the form fields -->
-  <button type="submit">Submit</button>
-</form>
+<div class="form-container">
+  <form method="post" class="styled-form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
 {% endblock %}
